@@ -1,6 +1,7 @@
 'use server'
 import { uploadImage } from '@/lib/cloudinary';
 import { storePost, updatePostLikeStatus } from '@/lib/posts';
+import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 
@@ -39,10 +40,12 @@ import { redirect } from 'next/navigation';
       content,
       userId: 1
     })
-
+    revalidatePath('/' ,'layout')
     redirect('/feed');
   }
 
   export async function togglePostLikeStatus(postId){
-    updatePostLikeStatus(postId,2); //userID = 2 is hardcoded
+    updatePostLikeStatus(postId,2);
+     //userID = 2 is hardcoded
+     revalidatePath('/' , 'layout');
   }
